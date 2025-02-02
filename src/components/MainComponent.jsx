@@ -27,6 +27,7 @@ const MainComponent = () => {
   const handleSubmit = () => {
     // API call logic (if needed)
     console.log("Form submitted");
+    // console.log(data);
   };
 
   return (
