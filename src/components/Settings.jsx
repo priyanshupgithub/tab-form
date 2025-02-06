@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const Settings = () => {
   const availableThemes = ["light", "dark"];
-  const [theme, setTheme] = useState();
+  const [theme, setTheme] = useState("");
 
   const handleChange = (event) => {
     setTheme(event.target.value);
@@ -21,7 +21,7 @@ const Settings = () => {
               type="radio"
               name="theme"
               value={themeOption}
-              onChange={handleChange}
+              onChange={(e) => setTheme(e.target.value)}
               className="w-4 h-4"
             />
             <span className="text-sm">{themeOption}</span>
@@ -31,7 +31,7 @@ const Settings = () => {
 
       <div className="mt-4 w-max">
         <h4 className="font-semibold">Selected Theme:</h4>
-        <p className="text-sm">{theme}</p>
+        <p className="text-sm">{theme || "No theme selected"}</p>
       </div>
     </div>
   );

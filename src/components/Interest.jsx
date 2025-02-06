@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-const Interest = () => {
+const Interest = ({ selectedInterests, setSelectedInterests, error }) => {
   const interests = ["Cricket", "Football", "Coding", "Chess", "StandUp"];
-  const [selectedInterests, setSelectedInterests] = useState([]);
 
   const handleChange = (event) => {
     // value: This represents the interest name from the checkbox that triggered the event. It's the value assigned to the checkbox when it's created.
@@ -39,6 +38,9 @@ const Interest = () => {
             <span className="text-sm">{interest}</span>
           </label>
         ))}
+        {error.interests && (
+          <span className="text-red-500 text-sm">{error.interests}</span>
+        )}
       </div>
       <div className="mt-4 w-max">
         <h4 className="font-semibold">Selected Interests:</h4>

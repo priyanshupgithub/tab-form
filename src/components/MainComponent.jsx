@@ -4,31 +4,98 @@ import Interest from "./Interest";
 import Settings from "./Settings";
 
 const MainComponent = () => {
-  const headings = [
-    { name: "Profile", component: <Profile /> },
-    { name: "Interest", component: <Interest /> },
-    { name: "Settings", component: <Settings /> },
-  ];
-
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [age, setAge] = useState("");
+  const [mail, setMail] = useState("");
+  const [number, setNumber] = useState("");
+  const [interests, setInterests] = useState([]);
+  const [error, setError] = useState({});
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const validateFields = (step) => {
+    const newError = {};
+    if (step == 0) {
+      if (!firstName || firstName.length < 2) {
+        newError.firstName = "First Name is not valid";
+      }
+      if (!lastName || lastName.length < 2) {
+        newError.lastName = "Last Name is not valid";
+      }
+      if (!age || age < 18) {
+        newError.age = "Age must be at least 18";
+      }
+      if (!mail || !/\S+@\S+\.\S+/.test(mail)) {
+        newError.mail = "Email is not valid";
+      }
+      if (!number || number.length !== 10) {
+        newError.number = "Phone number should be 10 digits";
+      }
+    }
+    if (step == 1) {
+      if (interests.length === 0) {
+        newError.interests = "Please select at least one interest";
+      }
+    }
+
+    setError(newError);
+
+    return Object.keys(newError).length === 0;
+  };
+
   const handleClick = (index) => {
-    setActiveIndex(index);
+    if (validateFields(activeIndex)) {
+      setActiveIndex(index);
+    }
   };
 
   const handleNext = () => {
-    setActiveIndex((prev) => Math.min(prev + 1, headings.length - 1)); // Ensure it does not exceed max index
+    if (validateFields(activeIndex)) {
+      setActiveIndex((prev) => Math.min(prev + 1, headings.length - 1));
+    }
   };
 
   const handlePrev = () => {
-    setActiveIndex((prev) => Math.max(prev - 1, 0)); // Ensure it does not go below zero
+    setActiveIndex((prev) => Math.max(prev - 1, 0));
   };
 
   const handleSubmit = () => {
-    // API call logic (if needed)
-    console.log("Form submitted");
-    // console.log(data);
+    if (validateFields()) {
+      console.log("Form submitted");
+    }
   };
+
+  const headings = [
+    {
+      name: "Profile",
+      component: (
+        <Profile
+          firstName={firstName}
+          setFirstName={setFirstName}
+          lastName={lastName}
+          setLastName={setLastName}
+          age={age}
+          setAge={setAge}
+          mail={mail}
+          setMail={setMail}
+          number={number}
+          setNumber={setNumber}
+          error={error}
+        />
+      ),
+    },
+    {
+      name: "Interest",
+      component: (
+        <Interest
+          selectedInterests={interests}
+          setSelectedInterests={setInterests}
+          error={error}
+        />
+      ),
+    },
+    { name: "Settings", component: <Settings error={error} /> },
+  ];
 
   return (
     <div>
@@ -47,10 +114,8 @@ const MainComponent = () => {
           ))}
         </div>
 
-        {/* Display active component */}
         {headings[activeIndex].component}
 
-        {/* Navigation Buttons */}
         <div className="mt-2 flex space-x-3 ml-5">
           {activeIndex > 0 && (
             <button
