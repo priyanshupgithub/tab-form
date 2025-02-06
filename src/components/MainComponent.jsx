@@ -99,7 +99,7 @@ const MainComponent = () => {
 
   return (
     <div>
-      <div className="border flex flex-col border-black h-[27rem] rounded-lg bg-gray-200 max-w-[85%]">
+      <div className="border flex flex-col border-black h-[35rem] rounded-lg bg-gray-200 max-w-[85%]">
         <div className="w-[100%] flex space-x-5 p-3 border-b border-gray-400">
           {headings.map((heading, index) => (
             <div
